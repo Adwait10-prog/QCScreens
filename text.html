@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Alternator with Comments</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="video-container">
+            <div class="video-wrapper">
+                <label for="video1">Source</label>
+                <video id="video1" controls></video>
+            </div>
+            <div class="video-wrapper">
+                <label for="video2">Target</label>
+                <video id="video2" controls></video>
+            </div>
+        </div>
+        <div class="controls">
+            <input type="file" id="upload1" accept="video/*">
+            <input type="file" id="upload2" accept="video/*">
+            <label for="intervalInput">Alternating Interval (seconds): </label>
+            <input type="number" id="intervalInput" value="15" min="1">
+            <button id="startButton">Start Alternating</button>
+        </div>
+        
+        <div class="comment-section">
+            <div class="comment-input">
+                <input type="text" id="commentInput" placeholder="Enter your comment">
+                <button id="commentButton">Add Comment</button>
+            </div>
+            <ul id="commentList"></ul>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
