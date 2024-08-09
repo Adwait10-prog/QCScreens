@@ -33,13 +33,31 @@ function startAlternatingVideos() {
 function alternateVideos() {
     if (!video1.paused) {
         video1.pause();
-        video2.play();
-        activeVideo = video2;
+        
+        // Add a delay of 1 second before starting the target video
+        setTimeout(() => {
+            video2.play();
+            activeVideo = video2;
+            
+            if (video2.currentTime < video2.duration) {
+                setTimeout(alternateVideos, interval);
+            }
+        }, 1000); // 1000 ms = 1 second
     } else {
         video2.pause();
-        video1.play();
-        activeVideo = video1;
+        
+        // Add a delay of 1 second before starting the source video
+        setTimeout(() => {
+            video1.play();
+            activeVideo = video1;
+            
+            if (video1.currentTime < video1.duration) {
+                setTimeout(alternateVideos, interval);
+            }
+        }, 1000); // 1000 ms = 1 second
     }
+}
+
     
     if (video1.currentTime < video1.duration || video2.currentTime < video2.duration) {
         setTimeout(alternateVideos, interval);
