@@ -3,11 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('upload2').addEventListener('change', handleVideoUpload);
     document.getElementById('startButton').addEventListener('click', startAlternatingVideos);
     document.getElementById('commentButton').addEventListener('click', addComment);
+    document.getElementById('downloadCommentsButton').addEventListener('click', downloadComments);
 
     let video1 = document.getElementById('video1');
     let video2 = document.getElementById('video2');
     let activeVideo = video1; // Start with video1 as the active video
     let interval;
+    let comments = [];
 
     function handleVideoUpload(event) {
         let file = event.target.files[0];
@@ -65,9 +67,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
         let commentText = commentInput.value;
         if (commentText.trim() !== '') {
+            let currentTime = video2.currentTime;
+            comments.push({ comment: commentText, timestamp: currentTime });
+
             let li = document.createElement('li');
-            li.textContent = `${commentText} (Timestamp: ${formatTime(video2.currentTime)})`;
-            li.dataset.timestamp = video2.currentTime;
+            li.textContent = `${commentText} (Timestamp: ${formatTime(currentTime)})`;
+            li.dataset.timestamp = currentTime;
             li.addEventListener('click', function() {
                 seekToTimestamp(this.dataset.timestamp);
             });
@@ -86,5 +91,16 @@ document.addEventListener('DOMContentLoaded', () => {
         let date = new Date(0);
         date.setSeconds(seconds);
         return date.toISOString().substr(11, 8);
+    }
+
+    function downloadComments() {
+        let commentText = comments.map(c => `${c.comment} (Timestamp: ${formatTime(c.timestamp)})`).join('\n');
+        let blob = new Blob([commentText], { type: 'text/plain' });
+        let link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'comments.txt';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 });
